@@ -5,13 +5,19 @@ class IndexController extends Zend_Controller_Action
 
     public function init()
     {
-        /* Initialize action controller here */
     }
 
     public function indexAction()
     {
-        $albums = new Application_Model_DbTable_Albums();
-        $this->view->albums = $albums->fetchAll();
+	if ($this->getRequest()->isXmlHttpRequest()){
+	    $this->_helper->layout->disableLayout();
+	    $this->_helper->viewRenderer->setNoRender(TRUE);
+	    echo json_encode($this->_request->getParams());	
+	    //echo json_encode();	
+	} else{
+	    $albums = new Application_Model_DbTable_Albums();
+	    $this->view->albums = $albums->fetchAll();
+	}
     }
 
     public function addAction()
